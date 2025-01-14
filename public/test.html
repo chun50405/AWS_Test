@@ -152,7 +152,210 @@
 
 
     <script>
-     const _0x579a8f=_0x2443;(function(_0x507537,_0x19d506){const _0x4bb70c=_0x2443,_0x5b3574=_0x507537();while(!![]){try{const _0x35ea55=-parseInt(_0x4bb70c(0x1e7))/0x1+-parseInt(_0x4bb70c(0x1c6))/0x2+-parseInt(_0x4bb70c(0x1c7))/0x3*(parseInt(_0x4bb70c(0x1e9))/0x4)+parseInt(_0x4bb70c(0x1d3))/0x5*(-parseInt(_0x4bb70c(0x1c5))/0x6)+parseInt(_0x4bb70c(0x1cf))/0x7+-parseInt(_0x4bb70c(0x1eb))/0x8+parseInt(_0x4bb70c(0x1d1))/0x9*(parseInt(_0x4bb70c(0x1ea))/0xa);if(_0x35ea55===_0x19d506)break;else _0x5b3574['push'](_0x5b3574['shift']());}catch(_0x3f3a15){_0x5b3574['push'](_0x5b3574['shift']());}}}(_0x4a09,0x28e0b));function _0x4a09(){const _0x12f711=['DOMContentLoaded','toFixed','6iGhNYF','410896GTWnqa','6QyoOPQ','\x20/\x20','floor','quizContainer','questionSet','授權成功！','getTime','digest','422604NfvvgW','授權失敗！請輸入正確的授權碼。','1233lnyXFl','innerText','1149235lfYYyj','none','question','授權過期！請重新輸入授權碼。','toString','value','display','options','sort','accuracy','addEventListener','http://localhost:3000/getQuestion/','map','答對率:\x20','licenseCode','log','join','\x22\x20name=\x22option\x22\x20value=\x22','mySecretKey123','\x22>\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','312635vBRqhm','input[name=\x22option\x22]:checked','513732UoWZUQ','95540iqYGxr','1576312YFBDQM','checkbox','radio','getElementById','padStart','subtle','style','block','answer','Correct!','innerHTML','from','length','encode','querySelectorAll'];_0x4a09=function(){return _0x12f711;};return _0x4a09();}let validTimeout,inputCode,i=-0x1,totalQuestionsAnswered=0x0,correctAnswers=0x0;const secretKey=_0x579a8f(0x1e5);async function generateLicenseCode(){const _0x1d630b=_0x579a8f,_0x4a3240=new Date(),_0x25afc6=Math[_0x1d630b(0x1c9)](_0x4a3240[_0x1d630b(0x1cd)]()/(0x3e8*0x3c*0x3c*0x18*0x1e)),_0x2f171f=_0x25afc6+'-'+secretKey,_0xaa8728=new TextEncoder(),_0x4cf0a2=_0xaa8728[_0x1d630b(0x1f8)](_0x2f171f),_0x46ef05=await crypto[_0x1d630b(0x1f0)][_0x1d630b(0x1ce)]('SHA-256',_0x4cf0a2),_0x23ed0e=Array['from'](new Uint8Array(_0x46ef05));return _0x23ed0e['map'](_0x59d7b1=>_0x59d7b1[_0x1d630b(0x1d7)](0x10)[_0x1d630b(0x1ef)](0x2,'0'))[_0x1d630b(0x1e3)]('');}async function authorize(){const _0x470bc9=_0x579a8f;inputCode=document[_0x470bc9(0x1ee)](_0x470bc9(0x1e1))['value'];const _0x4c9a44=await generateLicenseCode();inputCode===_0x4c9a44?(alert(_0x470bc9(0x1cc)),document[_0x470bc9(0x1ee)](_0x470bc9(0x1ca))[_0x470bc9(0x1f1)]['display']='block',document[_0x470bc9(0x1ee)]('licenseArea')['style'][_0x470bc9(0x1d9)]=_0x470bc9(0x1d4),checkLicenseValidity()):alert(_0x470bc9(0x1d0));}async function checkLicenseValidity(){const _0x1cf0f5=_0x579a8f,_0x1458dd=await generateLicenseCode();_0x1458dd===inputCode?(console[_0x1cf0f5(0x1e2)]('授權有效'),validTimeout=setTimeout(checkLicenseValidity,0x18*0x3c*0x3c*0x3e8)):(alert(_0x1cf0f5(0x1d6)),document['getElementById'](_0x1cf0f5(0x1ca))[_0x1cf0f5(0x1f1)]['display']=_0x1cf0f5(0x1d4),document[_0x1cf0f5(0x1ee)]('licenseArea')['style'][_0x1cf0f5(0x1d9)]=_0x1cf0f5(0x1f2),resetLicenseCode());}function resetLicenseCode(){const _0x39ece5=_0x579a8f;clearTimeout(validTimeout),document[_0x39ece5(0x1ee)](_0x39ece5(0x1e1))[_0x39ece5(0x1d8)]='';}async function getQuestionJson(_0x414d37){const _0x552db8=_0x579a8f;let _0x14ef8a=_0x552db8(0x1de)+_0x414d37;try{let _0x26416a=await fetch(_0x14ef8a),_0x346a08=await _0x26416a['json']();return _0x346a08;}catch(_0x33e0f7){cconsole[_0x552db8(0x1e2)]('Error:\x20'+_0x33e0f7);}}async function selectQuestionSet(){const _0x42b28f=_0x579a8f,_0x34286d=document[_0x42b28f(0x1ee)](_0x42b28f(0x1cb))[_0x42b28f(0x1d8)];selectedQuestions=_0x34286d?await getQuestionJson(_0x34286d):await getQuestionJson(0x1),updateProgress(),resetParams();}function startQuiz(){const _0x5ac50a=_0x579a8f;if(selectedQuestions[_0x5ac50a(0x1f7)]===0x0){alert('Please\x20select\x20a\x20question\x20set\x20first!');return;}loadQuestion();}function getRandomQuestion(){const _0x1eaae3=_0x579a8f;return i++,i>selectedQuestions[_0x1eaae3(0x1f7)]-0x1&&(i=-0x1),selectedQuestions[i];}function loadQuestion(){const _0x35262d=_0x579a8f,_0x30bef6=getRandomQuestion();document['getElementById'](_0x35262d(0x1d5))[_0x35262d(0x1d2)]=_0x30bef6['id']+'.'+_0x30bef6[_0x35262d(0x1d5)],document[_0x35262d(0x1ee)]('options')[_0x35262d(0x1f5)]='';const _0x4783ac=_0x30bef6['answer'][_0x35262d(0x1f7)]>0x1;for(const [_0x26b606,_0x2772e6]of Object['entries'](_0x30bef6['options'])){const _0x4bc61d=document['createElement']('div');_0x4bc61d[_0x35262d(0x1f5)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22'+(_0x4783ac?_0x35262d(0x1ec):_0x35262d(0x1ed))+_0x35262d(0x1e4)+_0x26b606+_0x35262d(0x1e6)+_0x26b606+':\x20'+_0x2772e6+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</label>',document[_0x35262d(0x1ee)](_0x35262d(0x1da))['appendChild'](_0x4bc61d);}document[_0x35262d(0x1ee)](_0x35262d(0x1f3))[_0x35262d(0x1d8)]=_0x30bef6['answer'];}function checkAnswer(){const _0x101bb5=_0x579a8f,_0x83f542=document['getElementById'](_0x101bb5(0x1f3))['value'],_0x2f89ee=Array[_0x101bb5(0x1f6)](document[_0x101bb5(0x1f9)](_0x101bb5(0x1e8)))[_0x101bb5(0x1df)](_0x375ddc=>_0x375ddc[_0x101bb5(0x1d8)])[_0x101bb5(0x1db)]()[_0x101bb5(0x1e3)]('');totalQuestionsAnswered++,_0x2f89ee===_0x83f542?(correctAnswers++,alert(_0x101bb5(0x1f4))):alert('Wrong!\x20The\x20correct\x20answers\x20are\x20'+_0x83f542['split']('')['join'](',\x20')),updateAccuracy(),updateProgress(),loadQuestion();}function updateAccuracy(){const _0x8affa4=_0x579a8f,_0x3e452c=(correctAnswers/totalQuestionsAnswered*0x64)[_0x8affa4(0x1fb)](0x2);document['getElementById'](_0x8affa4(0x1dc))['innerText']=_0x8affa4(0x1e0)+_0x3e452c+'%';}function updateProgress(){const _0x2c96c2=_0x579a8f;document[_0x2c96c2(0x1ee)]('progress')['innerText']=totalQuestionsAnswered+_0x2c96c2(0x1c8)+selectedQuestions[_0x2c96c2(0x1f7)];}function resetParams(){i=-0x1,totalQuestionsAnswered=0x0,correctAnswers=0x0;}function _0x2443(_0xb3b131,_0x58d57a){const _0x4a098b=_0x4a09();return _0x2443=function(_0x244387,_0x3149b9){_0x244387=_0x244387-0x1c5;let _0x1c5f16=_0x4a098b[_0x244387];return _0x1c5f16;},_0x2443(_0xb3b131,_0x58d57a);}document[_0x579a8f(0x1dd)](_0x579a8f(0x1fa),()=>{selectQuestionSet();});
+     const _0x397915 = _0x1a8a;
+(function (_0x5722cc, _0x2df280) {
+    const _0x477048 = _0x1a8a, _0x139831 = _0x5722cc();
+    while (!![]) {
+        try {
+            const _0x4c9386 = -parseInt(_0x477048(0xf7)) / 0x1 * (parseInt(_0x477048(0xd4)) / 0x2) + parseInt(_0x477048(0xc5)) / 0x3 * (-parseInt(_0x477048(0xf8)) / 0x4) + parseInt(_0x477048(0xcf)) / 0x5 * (-parseInt(_0x477048(0xea)) / 0x6) + -parseInt(_0x477048(0xfc)) / 0x7 + -parseInt(_0x477048(0xd6)) / 0x8 + -parseInt(_0x477048(0xd0)) / 0x9 * (-parseInt(_0x477048(0xed)) / 0xa) + parseInt(_0x477048(0xd3)) / 0xb;
+            if (_0x4c9386 === _0x2df280)
+                break;
+            else
+                _0x139831['push'](_0x139831['shift']());
+        } catch (_0xfd2df4) {
+            _0x139831['push'](_0x139831['shift']());
+        }
+    }
+}(_0x4fbe, 0xc409f));
+const _0x31470a = (function () {
+        let _0x66fa42 = !![];
+        return function (_0x513d97, _0x70196a) {
+            const _0xf86b95 = _0x66fa42 ? function () {
+                const _0x549b66 = _0x1a8a;
+                if (_0x70196a) {
+                    const _0x2fa390 = _0x70196a[_0x549b66(0xff)](_0x513d97, arguments);
+                    return _0x70196a = null, _0x2fa390;
+                }
+            } : function () {
+            };
+            return _0x66fa42 = ![], _0xf86b95;
+        };
+    }()), _0x1070fa = _0x31470a(this, function () {
+        const _0x9e5424 = _0x1a8a;
+        let _0x23f5c5;
+        try {
+            const _0x2d9d29 = Function('return\x20(function()\x20' + '{}.constructor(\x22return\x20this\x22)(\x20)' + ');');
+            _0x23f5c5 = _0x2d9d29();
+        } catch (_0x4395b0) {
+            _0x23f5c5 = window;
+        }
+        const _0x5d03a4 = _0x23f5c5[_0x9e5424(0xe7)] = _0x23f5c5[_0x9e5424(0xe7)] || {}, _0x257a6d = [
+                _0x9e5424(0xf6),
+                _0x9e5424(0xe3),
+                'info',
+                'error',
+                _0x9e5424(0xcd),
+                _0x9e5424(0xf2),
+                _0x9e5424(0xe6)
+            ];
+        for (let _0x19257e = 0x0; _0x19257e < _0x257a6d['length']; _0x19257e++) {
+            const _0x521759 = _0x31470a[_0x9e5424(0xe4)]['prototype'][_0x9e5424(0xfd)](_0x31470a), _0x835950 = _0x257a6d[_0x19257e], _0x33b0d7 = _0x5d03a4[_0x835950] || _0x521759;
+            _0x521759[_0x9e5424(0xc4)] = _0x31470a[_0x9e5424(0xfd)](_0x31470a), _0x521759[_0x9e5424(0xeb)] = _0x33b0d7[_0x9e5424(0xeb)][_0x9e5424(0xfd)](_0x33b0d7), _0x5d03a4[_0x835950] = _0x521759;
+        }
+    });
+_0x1070fa();
+let validTimeout, inputCode, i = -0x1, totalQuestionsAnswered = 0x0, correctAnswers = 0x0;
+const secretKey = 'mySecretKey123';
+async function generateLicenseCode() {
+    const _0x540c5f = _0x1a8a, _0x303e41 = new Date(), _0x34f06b = Math['floor'](_0x303e41['getTime']() / (0x3e8 * 0x3c * 0x3c * 0x18 * 0x1e)), _0xdfc092 = _0x34f06b + '-' + secretKey, _0x5866ce = new TextEncoder(), _0x477cc3 = _0x5866ce[_0x540c5f(0xc3)](_0xdfc092), _0x24be93 = await crypto[_0x540c5f(0xd9)]['digest'](_0x540c5f(0xca), _0x477cc3), _0x1acb35 = Array[_0x540c5f(0xde)](new Uint8Array(_0x24be93));
+    return _0x1acb35['map'](_0x19d121 => _0x19d121[_0x540c5f(0xeb)](0x10)['padStart'](0x2, '0'))[_0x540c5f(0xfa)]('');
+}
+async function authorize() {
+    const _0x3be137 = _0x1a8a;
+    inputCode = document[_0x3be137(0xc2)](_0x3be137(0xf3))['value'];
+    const _0x39355a = await generateLicenseCode();
+    inputCode === _0x39355a ? (alert(_0x3be137(0xf9)), document[_0x3be137(0xc2)]('quizContainer')[_0x3be137(0xda)][_0x3be137(0x100)] = _0x3be137(0xe0), document[_0x3be137(0xc2)](_0x3be137(0xf0))[_0x3be137(0xda)][_0x3be137(0x100)] = 'none', checkLicenseValidity()) : alert(_0x3be137(0xc7));
+}
+async function checkLicenseValidity() {
+    const _0x33ad0f = _0x1a8a, _0x154754 = await generateLicenseCode();
+    _0x154754 === inputCode ? (console[_0x33ad0f(0xf6)](_0x33ad0f(0xcb)), validTimeout = setTimeout(checkLicenseValidity, 0x18 * 0x3c * 0x3c * 0x3e8)) : (alert('授權過期！請重新輸入授權碼。'), document[_0x33ad0f(0xc2)]('quizContainer')[_0x33ad0f(0xda)]['display'] = 'none', document[_0x33ad0f(0xc2)](_0x33ad0f(0xf0))[_0x33ad0f(0xda)][_0x33ad0f(0x100)] = 'block', resetLicenseCode());
+}
+function resetLicenseCode() {
+    const _0x1ae4e0 = _0x1a8a;
+    clearTimeout(validTimeout), document[_0x1ae4e0(0xc2)]('licenseCode')[_0x1ae4e0(0xc6)] = '';
+}
+async function getQuestionJson(_0x4cd76b) {
+    const _0x29bfb8 = _0x1a8a;
+    let _0x2f5f1a = _0x29bfb8(0xf5) + _0x4cd76b;
+    try {
+        let _0x42c380 = await fetch(_0x2f5f1a), _0x2cd8a1 = await _0x42c380['json']();
+        return _0x2cd8a1;
+    } catch (_0x24538e) {
+        cconsole[_0x29bfb8(0xf6)](_0x29bfb8(0xee) + _0x24538e);
+    }
+}
+function _0x1a8a(_0x160817, _0x512b01) {
+    const _0x5c27e9 = _0x4fbe();
+    return _0x1a8a = function (_0x1070fa, _0x31470a) {
+        _0x1070fa = _0x1070fa - 0xc2;
+        let _0xed94e9 = _0x5c27e9[_0x1070fa];
+        return _0xed94e9;
+    }, _0x1a8a(_0x160817, _0x512b01);
+}
+function _0x4fbe() {
+    const _0x169c01 = [
+        'display',
+        'getElementById',
+        'encode',
+        '__proto__',
+        '3cPvPiA',
+        'value',
+        '授權失敗！請輸入正確的授權碼。',
+        'question',
+        'div',
+        'SHA-256',
+        '授權有效',
+        'innerHTML',
+        'exception',
+        'toFixed',
+        '205tXcZRq',
+        '9562545sxDYUQ',
+        'checkbox',
+        'querySelectorAll',
+        '42726266UhjZhj',
+        '14bDITmF',
+        'answer',
+        '12145784fnYOEr',
+        'DOMContentLoaded',
+        'progress',
+        'subtle',
+        'style',
+        'sort',
+        '\x22\x20name=\x22option\x22\x20value=\x22',
+        'options',
+        'from',
+        'split',
+        'block',
+        'accuracy',
+        'length',
+        'warn',
+        'constructor',
+        'entries',
+        'trace',
+        'console',
+        'map',
+        '\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22',
+        '152130ZNpZiZ',
+        'toString',
+        'createElement',
+        '10tRUxAD',
+        'Error:\x20',
+        'addEventListener',
+        'licenseArea',
+        'questionSet',
+        'table',
+        'licenseCode',
+        'appendChild',
+        'http://localhost:3000/getQuestion/',
+        'log',
+        '81596OeGQTx',
+        '2069156OEqsLU',
+        '授權成功！',
+        'join',
+        'radio',
+        '3482479nRnGhm',
+        'bind',
+        '\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</label>',
+        'apply'
+    ];
+    _0x4fbe = function () {
+        return _0x169c01;
+    };
+    return _0x4fbe();
+}
+async function selectQuestionSet() {
+    const _0xf31496 = _0x1a8a, _0x135ab9 = document[_0xf31496(0xc2)](_0xf31496(0xf1))[_0xf31496(0xc6)];
+    selectedQuestions = _0x135ab9 ? await getQuestionJson(_0x135ab9) : await getQuestionJson(0x1), updateProgress(), resetParams();
+}
+function startQuiz() {
+    const _0x3632e6 = _0x1a8a;
+    if (selectedQuestions[_0x3632e6(0xe2)] === 0x0) {
+        alert('Please\x20select\x20a\x20question\x20set\x20first!');
+        return;
+    }
+    loadQuestion();
+}
+function getRandomQuestion() {
+    return i++, i > selectedQuestions['length'] - 0x1 && (i = -0x1), selectedQuestions[i];
+}
+function loadQuestion() {
+    const _0x1be8b0 = _0x1a8a, _0x2d9bd5 = getRandomQuestion();
+    document[_0x1be8b0(0xc2)](_0x1be8b0(0xc8))['innerText'] = _0x2d9bd5['id'] + '.' + _0x2d9bd5['question'], document[_0x1be8b0(0xc2)](_0x1be8b0(0xdd))[_0x1be8b0(0xcc)] = '';
+    const _0x49283c = _0x2d9bd5[_0x1be8b0(0xd5)]['length'] > 0x1;
+    for (const [_0x4b8c26, _0x2223d8] of Object[_0x1be8b0(0xe5)](_0x2d9bd5[_0x1be8b0(0xdd)])) {
+        const _0x2753db = document[_0x1be8b0(0xec)](_0x1be8b0(0xc9));
+        _0x2753db[_0x1be8b0(0xcc)] = _0x1be8b0(0xe9) + (_0x49283c ? _0x1be8b0(0xd1) : _0x1be8b0(0xfb)) + _0x1be8b0(0xdc) + _0x4b8c26 + '\x22>\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x4b8c26 + ':\x20' + _0x2223d8 + _0x1be8b0(0xfe), document[_0x1be8b0(0xc2)](_0x1be8b0(0xdd))[_0x1be8b0(0xf4)](_0x2753db);
+    }
+    document[_0x1be8b0(0xc2)](_0x1be8b0(0xd5))[_0x1be8b0(0xc6)] = _0x2d9bd5['answer'];
+}
+function checkAnswer() {
+    const _0x420aac = _0x1a8a, _0xf67986 = document['getElementById'](_0x420aac(0xd5))[_0x420aac(0xc6)], _0x3210a4 = Array[_0x420aac(0xde)](document[_0x420aac(0xd2)]('input[name=\x22option\x22]:checked'))[_0x420aac(0xe8)](_0x1e356d => _0x1e356d['value'])[_0x420aac(0xdb)]()['join']('');
+    totalQuestionsAnswered++, _0x3210a4 === _0xf67986 ? (correctAnswers++, alert('Correct!')) : alert('Wrong!\x20The\x20correct\x20answers\x20are\x20' + _0xf67986[_0x420aac(0xdf)]('')[_0x420aac(0xfa)](',\x20')), updateAccuracy(), updateProgress(), loadQuestion();
+}
+function updateAccuracy() {
+    const _0x363dd1 = _0x1a8a, _0x250f23 = (correctAnswers / totalQuestionsAnswered * 0x64)[_0x363dd1(0xce)](0x2);
+    document[_0x363dd1(0xc2)](_0x363dd1(0xe1))['innerText'] = '答對率:\x20' + _0x250f23 + '%';
+}
+function updateProgress() {
+    const _0x447a38 = _0x1a8a;
+    document['getElementById'](_0x447a38(0xd8))['innerText'] = totalQuestionsAnswered + '\x20/\x20' + selectedQuestions[_0x447a38(0xe2)];
+}
+function resetParams() {
+    i = -0x1, totalQuestionsAnswered = 0x0, correctAnswers = 0x0;
+}
+document[_0x397915(0xef)](_0x397915(0xd7), () => {
+    selectQuestionSet();
+});
     </script>
 </head>
 <body>
