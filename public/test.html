@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quiz</title>
+    <style>
+        /* 全局樣式 */
+        body {
+          font-family: 'Arial', sans-serif;
+          background-color: #f4f4f9;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+    
+        /* 卡片樣式 */
+        .quiz-container {
+          background-color: #fff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+          padding: 20px;
+          width: 100%;
+          max-width: 1600px;
+          text-align: center;
+          display: none;
+        }
+    
+        h1 {
+          color: #333;
+          margin-bottom: 20px;
+        }
+    
+        /* 題庫選擇區域 */
+        #questionSet {
+          padding: 10px;
+          font-size: 16px;
+          margin-bottom: 20px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+        }
+    
+        /* 題目區域 */
+        #question {
+          font-size: 20px;
+          font-weight: bold;
+          margin-bottom: 20px;
+        }
+    
+        /* 選項樣式 */
+        #options {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+    
+        label {
+          cursor: pointer;
+          display: block;
+          padding: 10px;
+          background-color: #f9f9f9;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        label:hover {
+          background-color: #e0e0e0;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        input[type="checkbox"],
+        input[type="radio"] {
+          margin-right: 10px;
+        }
+    
+        /* 按鈕樣式 */
+        button {
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          font-size: 16px;
+          border-radius: 5px;
+          cursor: pointer;
+          margin: 10px 5px;
+          transition: background-color 0.3s ease;
+        }
+    
+        button:hover {
+          background-color: #45a049;
+        }
+    
+        /* 正確率顯示 */
+        #accuracy {
+          font-size: 18px;
+          font-weight: bold;
+          background-color: #2196F3;
+          color: white;
+          padding: 10px;
+          border-radius: 5px;
+          display: inline-block;
+          margin-top: 20px;
+        }
+
+
+        /* 手機樣式 */
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                padding: 20px;
+            }
+
+            .quiz-container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            #question {
+                font-size: 18px;
+            }
+
+            label {
+                font-size: 16px;
+                padding: 8px;
+            }
+
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            #accuracy {
+                font-size: 16px;
+                padding: 8px;
+            }
+
+            #progress {
+                font-size: 14px;
+            }
+        }
+
+      </style>
+    
+
+
+    <script>
+     const _0x579a8f=_0x2443;(function(_0x507537,_0x19d506){const _0x4bb70c=_0x2443,_0x5b3574=_0x507537();while(!![]){try{const _0x35ea55=-parseInt(_0x4bb70c(0x1e7))/0x1+-parseInt(_0x4bb70c(0x1c6))/0x2+-parseInt(_0x4bb70c(0x1c7))/0x3*(parseInt(_0x4bb70c(0x1e9))/0x4)+parseInt(_0x4bb70c(0x1d3))/0x5*(-parseInt(_0x4bb70c(0x1c5))/0x6)+parseInt(_0x4bb70c(0x1cf))/0x7+-parseInt(_0x4bb70c(0x1eb))/0x8+parseInt(_0x4bb70c(0x1d1))/0x9*(parseInt(_0x4bb70c(0x1ea))/0xa);if(_0x35ea55===_0x19d506)break;else _0x5b3574['push'](_0x5b3574['shift']());}catch(_0x3f3a15){_0x5b3574['push'](_0x5b3574['shift']());}}}(_0x4a09,0x28e0b));function _0x4a09(){const _0x12f711=['DOMContentLoaded','toFixed','6iGhNYF','410896GTWnqa','6QyoOPQ','\x20/\x20','floor','quizContainer','questionSet','授權成功！','getTime','digest','422604NfvvgW','授權失敗！請輸入正確的授權碼。','1233lnyXFl','innerText','1149235lfYYyj','none','question','授權過期！請重新輸入授權碼。','toString','value','display','options','sort','accuracy','addEventListener','http://localhost:3000/getQuestion/','map','答對率:\x20','licenseCode','log','join','\x22\x20name=\x22option\x22\x20value=\x22','mySecretKey123','\x22>\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','312635vBRqhm','input[name=\x22option\x22]:checked','513732UoWZUQ','95540iqYGxr','1576312YFBDQM','checkbox','radio','getElementById','padStart','subtle','style','block','answer','Correct!','innerHTML','from','length','encode','querySelectorAll'];_0x4a09=function(){return _0x12f711;};return _0x4a09();}let validTimeout,inputCode,i=-0x1,totalQuestionsAnswered=0x0,correctAnswers=0x0;const secretKey=_0x579a8f(0x1e5);async function generateLicenseCode(){const _0x1d630b=_0x579a8f,_0x4a3240=new Date(),_0x25afc6=Math[_0x1d630b(0x1c9)](_0x4a3240[_0x1d630b(0x1cd)]()/(0x3e8*0x3c*0x3c*0x18*0x1e)),_0x2f171f=_0x25afc6+'-'+secretKey,_0xaa8728=new TextEncoder(),_0x4cf0a2=_0xaa8728[_0x1d630b(0x1f8)](_0x2f171f),_0x46ef05=await crypto[_0x1d630b(0x1f0)][_0x1d630b(0x1ce)]('SHA-256',_0x4cf0a2),_0x23ed0e=Array['from'](new Uint8Array(_0x46ef05));return _0x23ed0e['map'](_0x59d7b1=>_0x59d7b1[_0x1d630b(0x1d7)](0x10)[_0x1d630b(0x1ef)](0x2,'0'))[_0x1d630b(0x1e3)]('');}async function authorize(){const _0x470bc9=_0x579a8f;inputCode=document[_0x470bc9(0x1ee)](_0x470bc9(0x1e1))['value'];const _0x4c9a44=await generateLicenseCode();inputCode===_0x4c9a44?(alert(_0x470bc9(0x1cc)),document[_0x470bc9(0x1ee)](_0x470bc9(0x1ca))[_0x470bc9(0x1f1)]['display']='block',document[_0x470bc9(0x1ee)]('licenseArea')['style'][_0x470bc9(0x1d9)]=_0x470bc9(0x1d4),checkLicenseValidity()):alert(_0x470bc9(0x1d0));}async function checkLicenseValidity(){const _0x1cf0f5=_0x579a8f,_0x1458dd=await generateLicenseCode();_0x1458dd===inputCode?(console[_0x1cf0f5(0x1e2)]('授權有效'),validTimeout=setTimeout(checkLicenseValidity,0x18*0x3c*0x3c*0x3e8)):(alert(_0x1cf0f5(0x1d6)),document['getElementById'](_0x1cf0f5(0x1ca))[_0x1cf0f5(0x1f1)]['display']=_0x1cf0f5(0x1d4),document[_0x1cf0f5(0x1ee)]('licenseArea')['style'][_0x1cf0f5(0x1d9)]=_0x1cf0f5(0x1f2),resetLicenseCode());}function resetLicenseCode(){const _0x39ece5=_0x579a8f;clearTimeout(validTimeout),document[_0x39ece5(0x1ee)](_0x39ece5(0x1e1))[_0x39ece5(0x1d8)]='';}async function getQuestionJson(_0x414d37){const _0x552db8=_0x579a8f;let _0x14ef8a=_0x552db8(0x1de)+_0x414d37;try{let _0x26416a=await fetch(_0x14ef8a),_0x346a08=await _0x26416a['json']();return _0x346a08;}catch(_0x33e0f7){cconsole[_0x552db8(0x1e2)]('Error:\x20'+_0x33e0f7);}}async function selectQuestionSet(){const _0x42b28f=_0x579a8f,_0x34286d=document[_0x42b28f(0x1ee)](_0x42b28f(0x1cb))[_0x42b28f(0x1d8)];selectedQuestions=_0x34286d?await getQuestionJson(_0x34286d):await getQuestionJson(0x1),updateProgress(),resetParams();}function startQuiz(){const _0x5ac50a=_0x579a8f;if(selectedQuestions[_0x5ac50a(0x1f7)]===0x0){alert('Please\x20select\x20a\x20question\x20set\x20first!');return;}loadQuestion();}function getRandomQuestion(){const _0x1eaae3=_0x579a8f;return i++,i>selectedQuestions[_0x1eaae3(0x1f7)]-0x1&&(i=-0x1),selectedQuestions[i];}function loadQuestion(){const _0x35262d=_0x579a8f,_0x30bef6=getRandomQuestion();document['getElementById'](_0x35262d(0x1d5))[_0x35262d(0x1d2)]=_0x30bef6['id']+'.'+_0x30bef6[_0x35262d(0x1d5)],document[_0x35262d(0x1ee)]('options')[_0x35262d(0x1f5)]='';const _0x4783ac=_0x30bef6['answer'][_0x35262d(0x1f7)]>0x1;for(const [_0x26b606,_0x2772e6]of Object['entries'](_0x30bef6['options'])){const _0x4bc61d=document['createElement']('div');_0x4bc61d[_0x35262d(0x1f5)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<label>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22'+(_0x4783ac?_0x35262d(0x1ec):_0x35262d(0x1ed))+_0x35262d(0x1e4)+_0x26b606+_0x35262d(0x1e6)+_0x26b606+':\x20'+_0x2772e6+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</label>',document[_0x35262d(0x1ee)](_0x35262d(0x1da))['appendChild'](_0x4bc61d);}document[_0x35262d(0x1ee)](_0x35262d(0x1f3))[_0x35262d(0x1d8)]=_0x30bef6['answer'];}function checkAnswer(){const _0x101bb5=_0x579a8f,_0x83f542=document['getElementById'](_0x101bb5(0x1f3))['value'],_0x2f89ee=Array[_0x101bb5(0x1f6)](document[_0x101bb5(0x1f9)](_0x101bb5(0x1e8)))[_0x101bb5(0x1df)](_0x375ddc=>_0x375ddc[_0x101bb5(0x1d8)])[_0x101bb5(0x1db)]()[_0x101bb5(0x1e3)]('');totalQuestionsAnswered++,_0x2f89ee===_0x83f542?(correctAnswers++,alert(_0x101bb5(0x1f4))):alert('Wrong!\x20The\x20correct\x20answers\x20are\x20'+_0x83f542['split']('')['join'](',\x20')),updateAccuracy(),updateProgress(),loadQuestion();}function updateAccuracy(){const _0x8affa4=_0x579a8f,_0x3e452c=(correctAnswers/totalQuestionsAnswered*0x64)[_0x8affa4(0x1fb)](0x2);document['getElementById'](_0x8affa4(0x1dc))['innerText']=_0x8affa4(0x1e0)+_0x3e452c+'%';}function updateProgress(){const _0x2c96c2=_0x579a8f;document[_0x2c96c2(0x1ee)]('progress')['innerText']=totalQuestionsAnswered+_0x2c96c2(0x1c8)+selectedQuestions[_0x2c96c2(0x1f7)];}function resetParams(){i=-0x1,totalQuestionsAnswered=0x0,correctAnswers=0x0;}function _0x2443(_0xb3b131,_0x58d57a){const _0x4a098b=_0x4a09();return _0x2443=function(_0x244387,_0x3149b9){_0x244387=_0x244387-0x1c5;let _0x1c5f16=_0x4a098b[_0x244387];return _0x1c5f16;},_0x2443(_0xb3b131,_0x58d57a);}document[_0x579a8f(0x1dd)](_0x579a8f(0x1fa),()=>{selectQuestionSet();});
+    </script>
+</head>
+<body>
+   <span id="licenseArea">
+      <h1>請輸入授權碼</h1>
+      <input type="text" id="licenseCode" placeholder="Enter your license code">
+      <button onclick="authorize()">授權</button>
+   </span>
+   
+    <div id="quizContainer" class="quiz-container">
+        <h1>測驗</h1>
+
+        <!-- 題庫選擇下拉選單 -->
+        <label for="questionSet">選擇題庫:</label>
+        <select id="questionSet" onchange="selectQuestionSet()">
+            <option value="1">題庫1</option>
+            <option value="2">題庫2</option>
+        </select>
+
+        <button onclick="startQuiz()">開始測驗</button>
+
+        <div id="question"></div>
+        <div id="options"></div>
+        <input type="hidden" id="answer">
+        <button onclick="checkAnswer()">確定</button>
+        <button onclick="loadQuestion()">下一題</button>
+        <h2 id="accuracy">答對率: 0%</h2>
+        <h2 id="progress"></h2>
+    </div>
+    
+</body>
+</html>
