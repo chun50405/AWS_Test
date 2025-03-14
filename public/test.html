@@ -415,6 +415,9 @@ document[_0x10b6a2(0x97)](_0x10b6a2(0xaa), () => {
         <input type="hidden" id="answer">
         <button onclick="checkAnswer()">確定</button>
         <button onclick="loadQuestion()">下一題</button>
+        <label for="jumpTo">跳至題號:</label>
+        <input type="number" id="jumpTo" min="1" placeholder="輸入題號">
+        <button onclick="jumpToQuestion()">跳轉</button>
         <h2 id="accuracy">答對率: 0%</h2>
         <h2 id="progress"></h2>
     </div>
