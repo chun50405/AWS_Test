@@ -9,57 +9,111 @@
   let url = 'https://aws-test-0kjz.onrender.com'
   document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("uploadBtn").addEventListener("click", function () {
-  const fileInput = document.getElementById("fileInput");
-  const status = document.getElementById("status");
+    const fileInput = document.getElementById("fileInput");
+    const status = document.getElementById("status");
 
-  if (fileInput.files.length === 0) {
-    status.textContent = "請先選擇檔案";
-    return;
-  }
-
-  const file = fileInput.files[0];
-  // 限制檔案類型為圖片和文件
-  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
-  const fileExtension = file.name.split('.').pop().toLowerCase();
-  // 檢查檔案類型是否在允許的類型中
-  if (!allowedExtensions.includes(`.${fileExtension}`)) {
-    status.textContent = "只允許上傳圖片（JPEG, PNG, GIF）和文件（PDF, Word）";
-    return;
-  }
-  
-  // 限制檔案大小為 5MB
-  const maxFileSize = 5 * 1024 * 1024;  // 5MB
-  if (file.size > maxFileSize) {
-    status.textContent = "檔案大小超過限制（最大 5MB）";
-    return;
-  }
-  
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", `${url}/upload`);
-
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      status.textContent = xhr.responseText;
-      loadFileList(); // 上傳後刷新列表
-    } else {
-      status.textContent = "上傳失敗：" + xhr.status;
+    if (fileInput.files.length === 0) {
+      status.textContent = "請先選擇檔案";
+      return;
     }
-  };
 
-  xhr.onerror = function () {
-    status.textContent = "連線錯誤";
-  };
+    const file = fileInput.files[0];
+    // 限制檔案類型為圖片和文件
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    // 檢查檔案類型是否在允許的類型中
+    if (!allowedExtensions.includes(`.${fileExtension}`)) {
+      status.textContent = "只允許上傳圖片（JPEG, PNG, GIF）和文件（PDF, Word）";
+      return;
+    }
+    
+    // 限制檔案大小為 5MB
+    const maxFileSize = 5 * 1024 * 1024;  // 5MB
+    if (file.size > maxFileSize) {
+      status.textContent = "檔案大小超過限制（最大 5MB）";
+      return;
+    }
+    
+    const formData = new FormData();
+    formData.append("file", file);
 
-  xhr.send(formData);
-});
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${url}/upload`);
 
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        status.textContent = xhr.responseText;
+        loadFileList(); // 上傳後刷新列表
+      } else {
+        status.textContent = "上傳失敗：" + xhr.status;
+      }
+    };
 
-  // 初始載入
-  loadFileList();
-});
+    xhr.onerror = function () {
+      status.textContent = "連線錯誤";
+    };
+
+    xhr.send(formData);
+  });
+
+    document.getElementById("uploadBtn2").addEventListener("click", function () {
+      const fileInput = document.getElementById("fileInput");
+      const status = document.getElementById("status");
+
+      if (fileInput.files.length === 0) {
+        status.textContent = "請先選擇檔案";
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+      if (!allowedExtensions.includes(`.${fileExtension}`)) {
+        status.textContent = "只允許上傳圖片（JPEG, PNG, GIF）和文件（PDF, Word）";
+        return;
+      }
+
+      const maxFileSize = 5 * 1024 * 1024;
+      if (file.size > maxFileSize) {
+        status.textContent = "檔案大小超過限制（最大 5MB）";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const base64Data = reader.result.split(',')[1]; // 拿掉 data:image/...;base64,
+        
+        const payload = JSON.stringify({
+          filename: file.name,
+          type: file.type,
+          data: base64Data
+        });
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", `${url}/uploadBase64`, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            status.textContent = "上傳成功";
+            loadFileList();
+          } else {
+            status.textContent = "上傳失敗：" + xhr.status;
+          }
+        };
+
+        xhr.onerror = function () {
+          status.textContent = "連線錯誤";
+        };
+
+        xhr.send(payload);
+      };
+
+      reader.readAsDataURL(file);
+    });
+      // 初始載入
+      loadFileList();
+    });
 
 
 //讀取檔案列表並更新畫面
@@ -123,6 +177,7 @@ async function loadFileList() {
   <h2>上傳檔案</h2>
   <input type="file" id="fileInput" />
   <button id="uploadBtn">上傳</button>
+  <button id="uploadBtn2">上傳2</button>
   <p id="status"></p>
 
   <h2>已上傳檔案</h2>

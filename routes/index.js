@@ -77,6 +77,36 @@ router.post('/upload', upload.single('file'), (req, res) => {
   }
   res.send('上傳成功：' + req.file.filename);
 });
+
+router.put('/uploadBase64', (req, res) => {
+  const { filename, type, data } = req.body;
+
+  if (!filename || !data) {
+    return res.status(400).send('缺少檔名或資料');
+  }
+
+  const ext = path.extname(filename);
+  const allowed = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
+  if (!allowed.includes(ext.toLowerCase())) {
+    return res.status(400).send('不允許的副檔名');
+  }
+
+  const buffer = Buffer.from(data, 'base64');
+  const safeFilename = Date.now() + '-' + filename.replace(/[^\w\-.]/g, '_');
+  const savePath = path.join(__dirname, 'uploads', safeFilename);
+
+  fs.writeFile(savePath, buffer, (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('寫入失敗');
+    }
+    res.send('上傳成功');
+  });
+});
+
+
+
+
 //下載檔案
 router.get('/download/:file', (req, res) => {
   const file = decodeURIComponent(req.params.file);
