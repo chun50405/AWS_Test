@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>檔案上傳與下載</title>
+</head>
+<script>
+  // let url = `http://localhost:3000`;
+  let url = 'https://aws-test-0kjz.onrender.com'
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("uploadBtn").addEventListener("click", function () {
+  const fileInput = document.getElementById("fileInput");
+  const status = document.getElementById("status");
+
+  if (fileInput.files.length === 0) {
+    status.textContent = "請先選擇檔案";
+    return;
+  }
+
+  const file = fileInput.files[0];
+  // 限制檔案類型為圖片和文件
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
+  const fileExtension = file.name.split('.').pop().toLowerCase();
+  // 檢查檔案類型是否在允許的類型中
+  if (!allowedExtensions.includes(`.${fileExtension}`)) {
+    status.textContent = "只允許上傳圖片（JPEG, PNG, GIF）和文件（PDF, Word）";
+    return;
+  }
+  
+  // 限制檔案大小為 5MB
+  const maxFileSize = 5 * 1024 * 1024;  // 5MB
+  if (file.size > maxFileSize) {
+    status.textContent = "檔案大小超過限制（最大 5MB）";
+    return;
+  }
+  
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", `${url}/upload`);
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      status.textContent = xhr.responseText;
+      loadFileList(); // 上傳後刷新列表
+    } else {
+      status.textContent = "上傳失敗：" + xhr.status;
+    }
+  };
+
+  xhr.onerror = function () {
+    status.textContent = "連線錯誤";
+  };
+
+  xhr.send(formData);
+});
+
+
+  // 初始載入
+  loadFileList();
+});
+
+
+//讀取檔案列表並更新畫面
+async function loadFileList() {
+  const list = document.getElementById("fileList");
+  list.innerHTML = "<li>載入中...</li>";
+
+  try {
+    const res = await fetch(`${url}/files`);
+    const files = await res.json();
+
+    list.innerHTML = "";
+
+    files.forEach(file => {
+      const li = document.createElement("li");
+
+      // 檔案下載連結
+      const link = document.createElement("a");
+      link.href = `${url}/download/` + encodeURIComponent(file);
+      link.textContent = file;
+      link.download = file;
+
+      // 刪除按鈕
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.style.marginLeft = "10px";
+      delBtn.onclick = async () => {
+        const ok = confirm(`確定要刪除「${file}」嗎？`);
+        if (!ok) return;
+        try {
+          const delRes = await fetch(`${url}/delete/${encodeURIComponent(file)}`, { method: "DELETE" });
+          if (delRes.ok) {
+            loadFileList(); // 重新載入列表
+          } else {
+            alert("刪除失敗！");
+          }
+        } catch (e) {
+          alert("刪除時發生錯誤！");
+          console.error(e);
+        }
+      };
+
+      li.appendChild(link);
+      li.appendChild(delBtn);
+      list.appendChild(li);
+    });
+
+    if (files.length === 0) {
+      list.innerHTML = "<li>目前沒有檔案</li>";
+    }
+
+  } catch (err) {
+    console.error("讀取檔案列表失敗：", err);
+    list.innerHTML = "<li>載入失敗，請稍後再試。</li>";
+  }
+}
+
+
+</script>
+<body>
+  <h2>上傳檔案</h2>
+  <input type="file" id="fileInput" />
+  <button id="uploadBtn">上傳</button>
+  <p id="status"></p>
+
+  <h2>已上傳檔案</h2>
+  <ul id="fileList"></ul>
+</body>
+</html>
