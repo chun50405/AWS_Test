@@ -7,6 +7,11 @@
 var app = require('../app');
 var debug = require('debug')('aws-testserver:server');
 var http = require('http');
+const WebSocket = require('ws');
+const path = require('path');
+const fs = require('fs');
+const crypto = require('crypto');
+
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +25,54 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+const wss = new WebSocket.Server({ server });
+
+
+wss.on('connection', (ws) => {
+  console.log('有 WebSocket 連線進來');
+  ws.on('message', (message) => {
+    // console.log("收到訊息: ", message);
+    try {
+      const parsed = JSON.parse(message);
+      const { filename, data } = parsed;
+
+      if (!filename || !data) {
+        return ws.send(JSON.stringify({ error: '缺少檔名或資料' }));
+      }
+      const ext = path.extname(filename);
+      const allowed = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
+      if(!allowed.includes(ext.toLowerCase())) {
+        ws.send(JSON.stringify({ error: '不允許的副檔名' }));
+      }
+      
+      const buffer = Buffer.from(data, 'base64');
+      const safeFilename = safeFileName(filename)
+      const savePath = path.join(__dirname, '../routes/uploads', safeFilename);
+
+      fs.writeFile(savePath, buffer, (err) => {
+        if (err) {
+          console.error(err);
+          ws.send(JSON.stringify({ error: '寫入失敗' }));
+        } else {
+          ws.send(JSON.stringify({ message: '檔案儲存成功', filename: safeFilename }));
+        }
+      });
+    } catch (err) {
+      console.log('err=', err)
+      ws.send(JSON.stringify({ error: 'JSON 格式錯誤' }));
+    }
+  });
+
+  ws.send('WebSocket 已連線');
+});
+
+function safeFileName(originalName) {
+  const extension = path.extname(originalName);  // 取得副檔名
+  const safeName = crypto.randomBytes(16).toString('hex') + extension;  // 生成隨機檔案名稱
+  return safeName;
+}
+
 
 /**
  * Listen on provided port, on all network interfaces.

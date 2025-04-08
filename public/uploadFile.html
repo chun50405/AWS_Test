@@ -8,55 +8,7 @@
   // let url = `http://localhost:3000`;
   let url = 'https://aws-test-0kjz.onrender.com'
   document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("uploadBtn").addEventListener("click", function () {
-    const fileInput = document.getElementById("fileInput");
-    const status = document.getElementById("status");
-
-    if (fileInput.files.length === 0) {
-      status.textContent = "請先選擇檔案";
-      return;
-    }
-
-    const file = fileInput.files[0];
-    // 限制檔案類型為圖片和文件
-    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
-    const fileExtension = file.name.split('.').pop().toLowerCase();
-    // 檢查檔案類型是否在允許的類型中
-    if (!allowedExtensions.includes(`.${fileExtension}`)) {
-      status.textContent = "只允許上傳圖片（JPEG, PNG, GIF）和文件（PDF, Word）";
-      return;
-    }
-    
-    // 限制檔案大小為 5MB
-    const maxFileSize = 5 * 1024 * 1024;  // 5MB
-    if (file.size > maxFileSize) {
-      status.textContent = "檔案大小超過限制（最大 5MB）";
-      return;
-    }
-    
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", `${url}/upload`);
-
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        status.textContent = xhr.responseText;
-        loadFileList(); // 上傳後刷新列表
-      } else {
-        status.textContent = "上傳失敗：" + xhr.status;
-      }
-    };
-
-    xhr.onerror = function () {
-      status.textContent = "連線錯誤";
-    };
-
-    xhr.send(formData);
-  });
-
-    document.getElementById("uploadBtn2").addEventListener("click", function () {
+    document.getElementById("uploadBtn").addEventListener("click", async function () {
       const fileInput = document.getElementById("fileInput");
       const status = document.getElementById("status");
 
@@ -68,6 +20,7 @@
       const file = fileInput.files[0];
       const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
       const fileExtension = file.name.split('.').pop().toLowerCase();
+
       if (!allowedExtensions.includes(`.${fileExtension}`)) {
         status.textContent = "只允許上傳圖片（JPEG, PNG, GIF）和文件（PDF, Word）";
         return;
@@ -79,38 +32,144 @@
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = function () {
-        const base64Data = reader.result.split(',')[1]; // 拿掉 data:image/...;base64,
-        
-        const payload = JSON.stringify({
-          filename: file.name,
-          type: file.type,
-          data: base64Data
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch(`${url}/upload`, {
+          method: "POST",
+          body: formData,
         });
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("PUT", `${url}/uploadBase64`, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            status.textContent = "上傳成功";
-            loadFileList();
-          } else {
-            status.textContent = "上傳失敗：" + xhr.status;
-          }
-        };
-
-        xhr.onerror = function () {
-          status.textContent = "連線錯誤";
-        };
-
-        xhr.send(payload);
-      };
-
-      reader.readAsDataURL(file);
+        if (res.ok) {
+          const text = await res.text();
+          status.textContent = text;
+          loadFileList();
+        } else {
+          status.textContent = `上傳失敗：${res.status}`;
+        }
+      } catch (err) {
+        status.textContent = "連線錯誤";
+        console.error(err);
+      }
     });
+
+    document.getElementById("uploadBtn2").addEventListener("click", async function () {
+      const fileInput = document.getElementById("fileInput");
+      const status = document.getElementById("status");
+
+      if (fileInput.files.length === 0) {
+        status.textContent = "請先選擇檔案";
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+
+      if (!allowedExtensions.includes(`.${fileExtension}`)) {
+        status.textContent = "只允許上傳圖片（JPEG, PNG, GIF）和文件（PDF, Word）";
+        return;
+      }
+
+      const maxFileSize = 5 * 1024 * 1024;
+      if (file.size > maxFileSize) {
+        status.textContent = "檔案大小超過限制（最大 5MB）";
+        return;
+      }
+
+      try {
+        const base64Data = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            resolve(reader.result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        const payload = {
+          filename: file.name,
+          type: file.type,
+          data: base64Data,
+        };
+
+        const res = await fetch(`${url}/uploadBase64`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          status.textContent = "上傳成功";
+          loadFileList();
+        } else {
+          status.textContent = `上傳失敗：${res.status}`;
+        }
+      } catch (err) {
+        status.textContent = "連線錯誤";
+        console.error(err);
+      }
+    });
+
+    document.getElementById("callPostTest").addEventListener("click", async function () {
+      let response = await fetch(url + '/callPostTest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ now: Date.now() })
+      });
+      let data = await response.json();
+      const status = document.getElementById("status");
+      status.textContent = data.message
+    })
+    document.getElementById("callPutTest").addEventListener("click", async function () {
+      let response = await fetch(url + '/callPutTest', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ now: Date.now() })
+      });
+      let data = await response.json();
+      const status = document.getElementById("status");
+      status.textContent = data.message
+    })
+
+    //WebSocket上傳 start
+    const socket = new WebSocket("ws://" + location.host);
+    const socketStatus = document.getElementById("socketStatus");
+
+    socket.onopen = () => {
+      document.getElementById("uploadBtn3").onclick = () => {
+        const file = document.getElementById("fileInput").files[0];
+        if (!file) return status.textContent = "請選擇檔案";
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result.split(',')[1];
+          console.log({ filename: file.name, data: base64 })
+          socket.send(JSON.stringify({ filename: file.name, data: base64 }));
+        };
+        reader.readAsDataURL(file);
+      };
+    };
+
+    socket.onmessage = (event) => {
+      loadFileList();
+      socketStatus.textContent = event.data;
+    };
+
+    socket.onerror = (err) => {
+      socketStatus.textContent = "連線錯誤";
+    };
+    //WebSocket上傳 end
+
+
+
       // 初始載入
       loadFileList();
     });
@@ -178,8 +237,11 @@ async function loadFileList() {
   <input type="file" id="fileInput" />
   <button id="uploadBtn">上傳</button>
   <button id="uploadBtn2">上傳2</button>
+  <button id="uploadBtn3">上傳3</button>
   <p id="status"></p>
-
+  <p id="socketStatus"></p>
+  <button id="callPostTest">測試Post</button>
+  <button id="callPutTest">測試Put</button>
   <h2>已上傳檔案</h2>
   <ul id="fileList"></ul>
 </body>

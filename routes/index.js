@@ -92,7 +92,8 @@ router.put('/uploadBase64', (req, res) => {
   }
 
   const buffer = Buffer.from(data, 'base64');
-  const safeFilename = Date.now() + '-' + filename.replace(/[^\w\-.]/g, '_');
+  const safeFilename = safeFileName(filename)
+  
   const savePath = path.join(__dirname, 'uploads', safeFilename);
 
   fs.writeFile(savePath, buffer, (err) => {
@@ -136,5 +137,12 @@ router.get('/files', (req, res) => {
 });
 
 
+router.post('/callPostTest', (req, res) => {
+  res.json( {message: "callPostTest Success" + '-' + req.body.now })
+})
+
+router.put('/callPutTest', (req, res) => {
+  res.json( {message: "callPutTest Success" + '-' + req.body.now })
+})
 
 module.exports = router;
