@@ -140,7 +140,7 @@
     })
 
     //WebSocket上傳 start
-    const socket = new WebSocket("ws://" + location.host);
+    const socket = new WebSocket("wss://" + location.host);
     const socketStatus = document.getElementById("socketStatus");
 
     socket.onopen = () => {
