@@ -52,7 +52,7 @@
     "id": "question005",
     "question": "You are using multiple configurations for gcloud. You want to review the configured Kubernetes Engine cluster of an inactive configuration using the fewest possible steps. What should you do?",
     "question_translation": "您正在使用多種 gcloud 配置。您希望使用盡可能少的步驟來檢查已設定的非活動配置的 Kubernetes Engine 叢集。你該怎麼辦？",
-    "answer": "D",
+    "answer": "A",
     "options": {
       "A": "Use gcloud config configurations describe to review the output.",
       "B": "Use gcloud config configurations activate and gcloud config list to review the output.",
@@ -784,7 +784,7 @@
     "id": "question066",
     "question": "Your company has an existing GCP organization with hundreds of projects and a billing account. Your company recently acquired another company that also has hundreds of projects and its own billing account. You would like to consolidate all GCP costs of both GCP organizations onto a single invoice. You would like to consolidate all costs as of tomorrow. What should you do?",
     "question_translation": "您的公司現有一個包含數百個項目和一個結算帳戶的 GCP 組織。您的公司最近收購了另一家公司，該公司也擁有數百個項目和自己的計費帳戶。您希望將兩個 GCP 組織的所有 GCP 成本合併到一張發票上。您希望從明天開始合併所有費用。你該怎麼辦？",
-    "answer": "A",
+    "answer": "C",
     "options": {
       "A": "Link the acquired company's projects to your company's billing account.",
       "B": "Configure the acquired company's billing account and your company's billing account to export the billing data into the same BigQuery dataset.",
