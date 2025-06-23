@@ -1902,7 +1902,7 @@
     "id": "question159",
     "question": "You are building an application that processes data files uploaded from thousands of suppliers. Your primary goals for the application are data security and the expiration of aged data. You need to design the application to:\n\n* Restrict access so that suppliers can access only their own data.\n* Give suppliers write access to data only for 30 minutes.\n* Delete data that is over 45 days old.\n\nYou have a very short development cycle, and you need to make sure that the application requires minimal maintenance. Which two strategies should you use? (Choose two.)",
     "question_translation": "您正在建立一個應用程式來處理從數千個供應商上傳的資料檔案。您的應用程式的主要目標是資料安全和老化資料的過期。您需要將應用程式設計為：\n\n* 限制訪問，使供應商只能存取自己的資料。\n* 僅授予供應商 30 分鐘的資料寫入權限。\n* 刪除超過 45 天的資料。\n\n您的開發週期非常短，並且需要確保應用程式需要最少的維護。您應該使用哪兩種策略？（選兩個。）",
-    "answer": ["A", "B"],
+    "answer": "AB",
     "options": {
       "A": "Build a lifecycle policy to delete Cloud Storage objects after 45 days.",
       "B": "Use signed URLs to allow suppliers limited-time access to store their objects.",
@@ -3175,7 +3175,7 @@
     "id": "question265",
     "question": "You just installed the Google Cloud CLI on your new corporate laptop. You need to list the existing instances of your company on Google Cloud. What must you do before you run the gcloud compute instances list command? (Choose two.)",
     "question_translation": "您剛剛在新的公司筆記型電腦上安裝了 Google Cloud CLI。您需要列出您公司在 Google Cloud 上的現有實例。在運行 gcloud 計算實例列表命令之前必須做什麼？（選兩個。）",
-    "answer": "A,E",
+    "answer": "AE",
     "options": {
       "A": "Run gcloud auth login, enter your login credentials in the dialog window, and paste the received login token to gcloud CLI.",
       "B": "Create a Google Cloud service account, and download the service account key. Place the key file in a folder on your machine where gcloud CLI can find it.",
@@ -3272,7 +3272,7 @@
     "id": "question273",
     "question": "Your company uses BigQuery to store and analyze data. Upon submitting your query in BigQuery, the query fails with a quotaExceeded error. You need to diagnose the issue causing the error. What should you do? (Choose two.)",
     "question_translation": "您的公司使用 BigQuery 來儲存和分析資料。在 BigQuery 中提交查詢後，查詢會失敗並出現 quotaExceeded 錯誤。您需要診斷導致錯誤的問題。你該怎麼辦？（選兩個。）",
-    "answer": "B,D",
+    "answer": "BD",
     "options": {
       "A": "Use BigQuery BI Engine to analyze the issue.",
       "B": "Use the INFORMATION_SCHEMA views to analyze the underlying issue.",
@@ -3417,7 +3417,7 @@
     "id": "question285",
     "question": "You are the Organization Administrator for your company's Google Cloud resources. Your company has strict compliance rules that require you to be notified about any modifications to files and documents hosted on Cloud Storage. In a recent incident, one of your team members was able to modify files and you did not receive any notifications, causing other production jobs to fail. You must ensure that you receive notifications for all changes to files and documents in Cloud Storage while minimizing management overhead. What should you do?",
     "question_translation": "您是貴公司 Google Cloud 資源的組織管理員。您的公司有嚴格的合規規則，要求您收到有關雲端儲存上託管的文件和文件的任何修改的通知。在最近的事件中，您的一名團隊成員能夠修改文件，而您沒有收到任何通知，導致其他生產工作失敗。您必須確保收到有關 Cloud Storage 中文件和文件的所有變更的通知，同時盡量減少管理開銷。你應該怎麼做？",
-    "answer": "B",
+    "answer": "D",
     "options": {
       "A": "View Cloud Audit logs for all Cloud Storage files in Logs Explorer. Filter by Admin Activity logs.",
       "B": "Enable Cloud Storage object versioning on your bucket. Configure Pub/Sub notifications for your Cloud Storage buckets.",
